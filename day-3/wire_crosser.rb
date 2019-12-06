@@ -9,6 +9,11 @@ class WireCrosser
     manhattan_distance(intersection)
   end
 
+  def get_fewest_step_intersection
+    intersection =  fewest_step_intersection(all_wire_intersections)
+    steps_to_intersection(intersection)
+  end
+
   def calculate_wire_coordinates(instructions)
     wire = [{x: 0, y: 0}]
 
@@ -41,7 +46,7 @@ class WireCrosser
 
   def closest_intersection(intersections)
     intersection = nil
-    min_distance = 99999999999
+    min_distance = 99999999999 #not good, i know :\
 
     intersections.each do |coordinate|
       distance = manhattan_distance(coordinate)
@@ -53,6 +58,26 @@ class WireCrosser
     end
 
     intersection
+  end
+
+  def fewest_step_intersection(intersections)
+    intersection = nil
+    min_step_count = 99999999999
+
+    intersections.each do |coordinate|
+      step_count = steps_to_intersection(coordinate)
+
+      if step_count < min_step_count && step_count > 0
+        min_step_count = step_count
+        intersection = coordinate
+      end
+    end
+
+    intersection
+  end
+
+  def steps_to_intersection(coordinate)
+    @wire_one.index(coordinate) + @wire_two.index(coordinate)
   end
 
 
@@ -69,4 +94,6 @@ end
 wire_one = File.read("wire1.txt").split(",")
 wire_two = File.read("wire2.txt").split(",")
 
-w = WireCrosser.new(wire_one, wire_two).get_closest_intersection
+w = WireCrosser.new(wire_one, wire_two)
+w.get_closest_intersection
+w.get_fewest_step_intersection
