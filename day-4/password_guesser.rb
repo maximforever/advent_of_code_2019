@@ -14,8 +14,6 @@ class PasswordGuesser
 
     return possible_numbers.length
   end
-
-  
 end
 
 class Number
